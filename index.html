@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TNIWE — Sets Catalog</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0a;--surface:#111;--border:#1e1e1e;--text:#e8e8e8;--dim:#555}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:"DM Sans",sans-serif;min-height:100vh}
+header{padding:50px 48px 36px;border-bottom:1px solid var(--border);display:flex;align-items:flex-end;justify-content:space-between}
+.logo{font-family:"Bebas Neue",sans-serif;font-size:clamp(48px,7vw,88px);letter-spacing:.08em;line-height:1}
+.logo span{color:#333}
+.header-right{text-align:right;padding-bottom:6px}
+.header-right p{font-size:11px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;line-height:2}
+.header-right strong{color:var(--text);font-weight:500}
+.notice{background:#0f0f0f;border-bottom:1px solid var(--border);padding:11px 48px;font-size:11px;color:var(--dim);letter-spacing:.07em;text-align:center}
+.notice strong{color:var(--text);font-weight:500}
+.stats{padding:18px 48px;display:flex;gap:36px;border-bottom:1px solid var(--border)}
+.stat-v{font-family:"Bebas Neue",sans-serif;font-size:26px;letter-spacing:.05em;line-height:1}
+.stat-l{font-size:10px;color:var(--dim);letter-spacing:.12em;text-transform:uppercase;margin-top:2px}
+main{padding:0 48px 80px;max-width:1600px;margin:0 auto}
+.ys{border-bottom:1px solid var(--border)}
+.yh{display:flex;align-items:center;justify-content:space-between;padding:24px 0;cursor:pointer;user-select:none;transition:opacity .2s}
+.yh:hover{opacity:.6}
+.yt{font-family:"Bebas Neue",sans-serif;font-size:clamp(32px,5vw,60px);letter-spacing:.06em;line-height:1}
+.ym{display:flex;align-items:center;gap:20px}
+.yc{font-size:11px;color:var(--dim);letter-spacing:.12em;text-transform:uppercase}
+.tog{width:26px;height:26px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:border-color .2s}
+.tog svg{transition:transform .35s cubic-bezier(.4,0,.2,1)}
+.ys.open .tog svg{transform:rotate(45deg)}
+.ys.open .tog{border-color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;overflow:hidden;max-height:0;transition:max-height .6s cubic-bezier(.4,0,.2,1)}
+.ys.open .grid{max-height:99999px;padding-bottom:28px}
+.card{position:relative;aspect-ratio:1;overflow:hidden;background:var(--surface);cursor:pointer}
+.card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s cubic-bezier(.4,0,.2,1),filter .3s;filter:brightness(.9)}
+.card:hover img{transform:scale(1.04);filter:brightness(1)}
+.card-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.85) 0%,transparent 55%);opacity:0;transition:opacity .3s;display:flex;align-items:flex-end;padding:14px}
+.card:hover .card-ov{opacity:1}
+.card-name{font-size:12px;font-weight:500;letter-spacing:.03em;line-height:1.3;color:#fff}
+.lb{position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:999;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s;padding:20px}
+.lb.on{opacity:1;pointer-events:all}
+.lb-inner{position:relative;max-width:860px;width:100%}
+.lb img{width:100%;display:block}
+.lb-close{position:absolute;top:-40px;right:0;background:none;border:none;color:#fff;font-size:11px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;font-family:"DM Sans",sans-serif;opacity:.5;transition:opacity .2s}
+.lb-close:hover{opacity:1}
+.lb-name{position:absolute;bottom:-32px;left:0;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+@media(max-width:768px){header{padding:28px 20px 20px;flex-direction:column;align-items:flex-start;gap:16px}.header-right{text-align:left}.notice{padding-left:20px;padding-right:20px}main{padding:0 20px 60px}.grid{grid-template-columns:repeat(3,1fr)}.card-ov{opacity:1;background:linear-gradient(to top,rgba(0,0,0,.75) 0%,transparent 60%)}.card-name{font-size:10px}.yt{font-size:clamp(36px,8vw,60px)}.lb-inner{max-width:100%}.lb-close{top:-36px;font-size:10px}.yh{padding:18px 0}.logo{font-size:clamp(40px,10vw,88px)}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">TNIWE<span>.</span></div>
+  <div class="header-right">
+    <p>2021&mdash;2026 Cosplay Sets Catalog</p>
+    <p>Available for <strong>Night City Legend</strong> tier</p>
+    <p><strong>For personal use only</strong></p>
+  </div>
+</header>
+<div class="notice">Browse &rarr; choose what you like &rarr; <strong>DM me the set name</strong> to get access</div>
+
+<main id="main"></main>
+<div class="lb" id="lb">
+  <div class="lb-inner">
+    <button class="lb-close" onclick="closeLb()">&#x2715; Close</button>
+    <img id="lb-img" src="" alt="">
+    <div class="lb-name" id="lb-name"></div>
+  </div>
+</div>
+<script>
+const SETS = {"2021": ["2B", "Ada Wong RE4", "Asari Stripper", "Bela Dimitrescu", "Black Tapes", "Boudoir Morrigan", "Faye Valentine", "Halloween Harley", "Harley Animated Series", "Jill Battle Damaged", "Jill Valentine RE1", "Kinky", "Latex Jessie", "Leeloo Dallas", "Leeloo white outfit", "NSFW Leeloo", "NSWF Jill", "Pinup Harley", "Princess Peach Jacket", "Quiet Alt Skin", "RE8", "Samus bodysuit", "Scarlet Witch Lingerie", "Sonya Blade MK1", "Sonya Blade MK3", "Squid Game", "Summer Peach", "Supergirl", "Swimsuit Jill", "Vampirella (black)", "Wanda Maximoff", "Witch Peach", "Wonder Woman 1975", "Xmas Jill Valentine", "Xmas Tifa", "Yoko Littner"], "2022": ["Ashley Ketchum", "B-Day Harley", "Bikini 2B", "Bikini Misty", "Bikini Zelda", "Bride 2B", "Captured Quiet", "Classic Misty", "Cozy Misty", "EVA MGS", "Fem Freddy", "Fem Luffy", "Flight Attendant", "Italian Tifa", "Jacket Princess Peach", "Jill RE3 remake", "Microbikini 2B", "Microbikini Ann", "Microbikini Nami", "NSFW Senate Tifa", "Poolparty Tifa", "SFW Senate Tifa", "Sakura Kasugano", "Sport Tifa", "Swimsuit Samus", "Tae Takemi", "Tiger Cammy", "Timeskip Nami", "Timeskip Nico Robin", "Tropical Cammy", "V-Day Faye", "VI Arcane", "Vampirella", "X-Mas Haley Quinn", "Yor Forger", "Yor NSFW", "Zelda based on CorbieJack"], "2023": ["2B without skirt", "Ada Wong RE4 remake", "Batman suit Harley", "Bikini Cammy", "Bunny Tifa", "CK Cammy", "CK Juri", "Cammy White SF6", "Claire Redfield", "Classic Tifa", "Cozy Peach", "Cupid Harley", "Halloween Wanda ", "Harley Patrick Bateman", "Himeno ", "Jill RE3", "Jill RE3 NSFW", "Juri Han SF6", "Latex 2B", "Lucy NSFW", "MK1 Sonya Blade", "Manon Legrand", "NSFW Juri Han", "NSFW Mistress Ada", "NSFW Nurse Joy", "NSFW Tifa", "Neon Bikini Harley", "Pool party Lucy", "Professor Sada", "Ring Fit Zelda", "Tifa Bee NSFW", "Tifa Bee SFW", "Wanda lingerie", "Xmas Cammy", "Yor in red", "Yumeko Jabami"], "2024": ["Ada Wong RE2", "Ada Wong RE2 lingerie", "April O'Neil", "CK Manon", "D.Va mini bikini", "Harley ISEKAI", "Hearts Lingerie", "Jill RE3 remake", "Jill bats bikini", "Juliet Starling", "Juliet Starling bikini", "Lady Death", "Makima", "Maria SH2", "Maria SH2 remake", "Moze", "NSFW Evil Peach", "NSFW Harley", "Pajama Juri", "Pajama Juri NSFW", "Paya NSFW", "Paya SFW", "Power ", "Queen Marika", "Revy", "Revy bikini", "SFW Evil Peach", "SFW Harley", "SH2 Nurse NSFW", "SH2 remake Nurse", "Sakura bikini", "Sonya Blade MK3 NSFW", "Sonya Blade MK3 SFW", "Stormtrooper", "Swimsuit Asuka", "Swimsuit Power", "Swimsuit Sonya", "Swimsuit Tifa", "Tifa dress", "Zelda white lingerie", "xmas harley"], "2025": ["Arcane Vi (battle)", "Asuka (Valentine's)", "Asuka school", "Bikini April", "Bikini Jinx", "Cammy Outfit 4", "Claire Redfield", "Classic Tifa", "EVA - MGS3", "Faye Valentine", "Gemma", "Lifeguard Tifa", "Mai (select screen)", "Mai Outfit 3", "Mai Shiranui", "Mai Shiranui CK", "Manon (elevator)", "Momo Ayase", "Momo Ayase (lingerie)", "Morrigan", "Nico Robin (Egghead)", "Nier - Kaine", "Power (boxer)", "Power (home outfit)", "SH2 remake Maria", "Seiko Ayase", "Seiko Ayase (home)", "Seiko Christmas", "Seiko Teacher", "Sonic girl", "Sport Emma frost", "Sue Storm 90s", "Sue Storm latex bikini", "Sue Storm swimsuit", "Tifa Sport", "X-mas Powy", "Zelda blue lingerie"], "2026": ["A2", "Date with Malevola ", "Grace Ashcroft RE9", "Hinako", "Jill and Ada collab", "Maki Season 3", "Maki Zenin", "Malevola", "Reze (maid)", "Vi Arcane", "Viper SF6", "Yuki Tsukumo", "Zelda (Fugtrup)"]};
+
+
+const main = document.getElementById('main');
+
+
+
+var years = Object.keys(SETS).reverse();
+years.forEach(function(year) {
+  var sets = SETS[year];
+  var sec = document.createElement('div');
+  sec.className = 'ys';
+
+  var cards = sets.map(function(name) {
+    var src = year + '/' + encodeURIComponent(name) + '.jpg';
+    return '<div class="card" onclick="openLb(\'' + src + '\',\'' + name.replace(/'/g, "\\'") + '\')">' +
+      '<img src="' + src + '" loading="lazy" alt="">' +
+      '<div class="card-ov"><div class="card-name">' + name + '</div></div>' +
+      '</div>';
+  }).join('');
+
+  sec.innerHTML =
+    '<div class="yh" onclick="this.parentElement.classList.toggle(\'open\')">' +
+      '<div class="yt">' + year + '</div>' +
+      '<div class="ym">' +
+        '<div class="yc">' + sets.length + ' sets</div>' +
+        '<div class="tog"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1V11M1 6H11" stroke="white" stroke-width="1.5"/></svg></div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="grid">' + cards + '</div>';
+
+  main.appendChild(sec);
+});
+
+var first = main.querySelector('.ys');
+if (first) first.classList.add('open');
+
+function openLb(src, name) {
+  document.getElementById('lb-img').src = src;
+  document.getElementById('lb-name').textContent = name;
+  document.getElementById('lb').classList.add('on');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLb() {
+  document.getElementById('lb').classList.remove('on');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('lb').addEventListener('click', function(e) {
+  if (e.target === this) closeLb();
+});
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeLb();
+});
+</script>
+</body>
+</html>
